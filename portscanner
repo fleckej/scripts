@@ -1,0 +1,28 @@
+#! /bin/bash
+
+# get user input for the ip address
+read -p "Input an IP address: " ipaddress
+
+# check if the ip address is invalid and loop back if it is
+while [[ ! $ipaddress =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]];
+do
+        # prompt the user for a valid ip address
+        read -p "Enter a valid IP address: " ipaddress
+done # exit the loop
+
+# prompt the user for the ports to be scanned of the ip address
+read -p "Enter ports to be scanned in the format: #-#: " ports
+
+
+# ask the user which switches to use
+echo "Choose scan options. Enter multiple by doing '-T4 -sV'"
+echo "-sV to view the services on each port"
+echo "-T4 for a faster scan"
+echo "-sS for TCP"
+echo "-sU for UDP"
+echo "Other flags not listed are also acceptable"
+# read the response to a variable to pass to nmap
+read options
+
+# execuute nmap with the desired options, ports, and ip address
+nmap $ipaddress -p$ports > portscanner.txt $options
